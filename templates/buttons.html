@@ -1,0 +1,43 @@
+{% macro buttons(contato) %}
+<form action="/deletar_contato" method="post" style="display:inline;">
+    <button class="waves-effect waves-light btn-small red" type="submit">
+        <i class="material-icons right">delete</i>Deletar
+    </button>
+    <input type="hidden" name="email" value="{{ contato.email }}">
+</form>
+
+<a href="#edit-modal-{{ contato..id }}" class="waves-effect waves-light btn-small blue modal-trigger">
+    <i class="material-icons right">edit</i>Editar
+</a>
+
+<div id="edit-modal-{{ contato.id_contato }}" class="modal">
+    <div class="modal-content">
+        <h4>Atualizar contato:</h4>
+        <form action="/atualizar_contato" method="post">
+            <input type="hidden" id="id" value="{{ contato.id_contato }}">
+            <div class="input-field">
+                <input type="text" id="nome-{{ contato.id_contato }}" name="nome" value="{{ contato.nome_contato }}" required>
+                <label for="nome-{{ contato.id_contato }}">Nome</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="email" name="email" value="{{ contato.email }}" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="celular-{{ contato.id_contato }}" name="celular" value="{{ contato.celular }}" required>
+                <label for="celular-{{ contato.id_contato }}">celular</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="celular_alt-{{ contato.id_contato }}" name="celular_alt" value="{{ contato.celular_alt }}" >
+                <label for="celular_alt-{{ contato.id_contato }}">celular</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="tags-{{ contato.id_contato }}" name="tags" value="{{ contato.tags }}" >
+                <label for="tags-{{ contato.id_contato }}">Tags</label>
+            </div>
+            <div class="input-field">
+                <button type="submit" class="waves-effect waves-light btn blue">Salvar</button>
+            </div>
+        </form>
+    </div>
+{% endmacro %}

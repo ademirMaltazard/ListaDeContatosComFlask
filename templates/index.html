@@ -1,0 +1,62 @@
+{% extends "Base.html" %}
+{{super()}}
+{% block content %}
+    <table class="highlight">
+        <thead>
+          <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Celular</th>
+              <th>Celular alternativo</th>
+              <th>Tags</th>
+              <th>Opções</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for contato in contatos:%}
+                <tr>
+                    <td>{{contato.nome_contato}}</td>
+                    <td>{{contato.email}}</td>
+                    <td>{{contato.celular}}</td>
+                    <td>{{contato.celula_alt}}</td>
+                    <td>{{contato.tags}}</td>
+                    <td>
+                        {% from 'buttons.html' import buttons %}
+                        {{ buttons(contato) }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+      </table>
+
+    <div id="add_modal" class="modal">
+        <div class="modal-content">
+            <h4>Adicionar contato:</h4>
+            <form action="/salvar_contato" method="post">
+                <div class="input-field">
+                    <input type="text" id="nome" name="nome"required>
+                    <label for="nome">Nome</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="email" name="email" required>
+                    <label for="email">Email</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="celular" name="celular" required>
+                    <label for="celular">celular</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="celular_alt" name="celular_alt">
+                    <label for="celular_alt">celular</label>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="tags" name="tags">
+                    <label for="tags">Tags</label>
+                </div>
+                <div class="input-field">
+                    <button type="submit" class="waves-effect waves-light btn blue">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
