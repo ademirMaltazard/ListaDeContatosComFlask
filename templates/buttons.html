@@ -6,7 +6,7 @@
     <input type="hidden" name="email" value="{{ contato.email }}">
 </form>
 
-<a href="#edit-modal-{{ contato..id }}" class="waves-effect waves-light btn-small blue modal-trigger">
+<a href="#edit-modal-{{ contato.id_contato }}" class="waves-effect waves-light btn-small blue modal-trigger">
     <i class="material-icons right">edit</i>Editar
 </a>
 
@@ -14,7 +14,7 @@
     <div class="modal-content">
         <h4>Atualizar contato:</h4>
         <form action="/atualizar_contato" method="post">
-            <input type="hidden" id="id" value="{{ contato.id_contato }}">
+            <input type="hidden" id="id" value="{{ contato.id_contato }}" name="id_contato">
             <div class="input-field">
                 <input type="text" id="nome-{{ contato.id_contato }}" name="nome" value="{{ contato.nome_contato }}" required>
                 <label for="nome-{{ contato.id_contato }}">Nome</label>

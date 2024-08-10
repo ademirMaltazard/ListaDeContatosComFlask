@@ -18,7 +18,7 @@
                     <td>{{contato.nome_contato}}</td>
                     <td>{{contato.email}}</td>
                     <td>{{contato.celular}}</td>
-                    <td>{{contato.celula_alt}}</td>
+                    <td>{{contato.celular_alt}}</td>
                     <td>{{contato.tags}}</td>
                     <td>
                         {% from 'buttons.html' import buttons %}
@@ -59,4 +59,12 @@
             </form>
         </div>
     </div>
+
+    <div id="add_modal_alert" class="modal">
+        <div class="modal-content">
+            <h3 >Erro!!!</h3>
+            <span>{{ mensagem }}</span>
+        </div>
+    </div>
+
 {% endblock %}
