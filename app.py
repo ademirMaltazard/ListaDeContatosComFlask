@@ -1,8 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
-from database import Contatos, session
+from database import Contatos, Users, session
+from werkzeug.security import generate_password_hash, check_password_hash
+import os
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "YOUTHSPACE"
+app.config["SECRET_KEY"] = "youthSpace"
+app.secret_key = os.urandom(24)
 mensagem = ''
 @app.route("/")
 def index():
@@ -52,12 +55,37 @@ def atualizarContato():
         session.commit()
     return redirect("/")
 
-@app.route("/registrar-se")
-def registrarNovoUsuario():
-    return render_template("Registro.html")
+@app.route("/registrar", methods=['GET', 'POST'])
+def registrar_se():
+    if request.method == 'POST':
+
+        senha = request.form['password']
+
+        '''if user:
+            global mensagem
+            mensagem = 'Nome de usuario indisponivel!'
+            return redirect(url_for("#add_modal_alert", mensagem=mensagem))
+        elif senha != confirmacao_senha:
+            mensagemSenha = 'As senhas não são iguais!'
+            return redirect(url_for("#add_modal_alert", mensagemSenha=mensagemSenha))
+        else:'''
+
+        hashed_password = generate_password_hash(senha)
+        print('hash code', hashed_password)
+        novo_usuario = Users(
+            nome=request.form['nome'],
+            username=request.form['user'],
+            senha=hashed_password
+        )
+        session.add(novo_usuario)
+        session.commit()
+        return redirect("/login")
+    return render_template('/registro.html')
 
 @app.route("/login")
 def login():
+    if request.method == 'POST':
+        username = request.form['user']
     return render_template("Login.html")
 
 
