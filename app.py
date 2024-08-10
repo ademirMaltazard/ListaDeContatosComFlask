@@ -52,6 +52,15 @@ def atualizarContato():
         session.commit()
     return redirect("/")
 
+@app.route("/registrar-se")
+def registrarNovoUsuario():
+    return render_template("Registro.html")
+
+@app.route("/login")
+def login():
+    return render_template("Login.html")
+
+
 if __name__ == "__main__":
     app.run()
 

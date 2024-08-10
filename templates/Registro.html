@@ -1,0 +1,30 @@
+{% extends "Base.html" %}
+{{ super() }}
+{% block content %}
+    <div>
+        <h4>Adicionar contato:</h4>
+        <form action="/registrar" method="post">
+            <div class="input-field">
+                <input type="text" id="nome" name="nome"required>
+                <label for="nome">Nome:</label>
+            </div>
+            <div class="input-field">
+                <input type="text" id="user" name="user">
+                <label for="user">Nome de usuário:</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Senha:</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="confirm_password" name="confirm_password" required>
+                <label for="confirm_password">Confirmar senha:</label>
+            </div>
+            <div class="input-field">
+                <button type="submit" class="waves-effect waves-light btn blue">Salvar</button>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}
