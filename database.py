@@ -26,7 +26,7 @@ class Contatos(Base):
     celular_alt = Column(String(30), nullable=True)
     tags = Column(String(30), nullable=True)
 
-    user_id = Column(Integer, ForeignKey('users.id_user'))
+    id_user = Column(Integer, ForeignKey('users.id_user'))
     users = relationship('Users', back_populates='contatos')
 
 Base.metadata.create_all(engine)
