@@ -19,22 +19,25 @@ def index():
 def add_contato():
     email = request.form['email']
     contato = session.query(Contatos).filter_by(email=email).first()
-    if contato:
-        global mensagem
-        mensagem = 'Email já cadastrado!'
-        return redirect(url_for("#add_modal_alert"))
-    else:
+    print(contato)
+
+    if "id_user" not in flask_session:
+        return redirect("/login")
+
+    if not contato:
+        id_user = flask_session["id_user"]
         novo_contato = Contatos(
             nome_contato=request.form['nome'],
             email=email,
             celular=request.form['celular'],
             celular_alt=request.form.get("celular_alt", ""),
             tags=request.form['tags'],
-            id_user=1
+            id_user=id_user
         )
         session.add(novo_contato)
         session.commit()
         return redirect("/")
+    return redirect('/')
 
 @app.route("/deletar_contato", methods=['POST'])
 def deletarContato():
