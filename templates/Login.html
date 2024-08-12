@@ -2,29 +2,28 @@
 {{ super() }}
 {% block content %}
     <h3 class="center">Login</h3>
-    {% if error %}
-        <p style="color:red;">{{ error|safe }}</p>
-    {% else %}
-        <div>
-            <form action="/registrar" method="post">
-                <div class="input-field">
-                    <input type="text" id="user" name="user"required>
-                    <label for="user">Nome de usuario:</label>
-                </div>
-                <div class="input-field">
-                    <input type="password" id="password" name="password" required>
-                    <label for="password">Senha:</label>
-                </div>
-                <p>
-                    <label>
-                        <input type="checkbox" id="relembrar" name="relembrar"/>
-                        <span>Manter conectado</span>
-                    </label>
-                </p>
-                <div class="input-field">
-                    <button type="submit" class="waves-effect waves-light btn blue">Salvar</button>
-                </div>
-            </form>
-        </div>
-    {% endif %}
+    <div>
+        <form method="post">
+            <div class="input-field">
+                <input type="text" id="user" name="user"required>
+                <label for="user">Nome de usuario:</label>
+            </div>
+            <div class="input-field">
+                <input type="password" id="password" name="password" required>
+                <label for="password">Senha:</label>
+            </div>
+            {% if error %}
+                <p style="color:red;">{{ error|safe }}</p>
+            {% endif %}
+            <p>
+                <label>
+                    <input type="checkbox" id="relembrar" name="relembrar"/>
+                    <span>Manter conectado</span>
+                </label>
+            </p>
+            <div class="input-field">
+                <button type="submit" class="waves-effect waves-light btn blue">Salvar</button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
