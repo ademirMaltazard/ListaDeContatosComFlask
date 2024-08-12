@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session as flask_session
 from database import Contatos, Users, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -9,8 +9,10 @@ app.secret_key = os.urandom(24)
 mensagem = ''
 @app.route("/")
 def index():
-    contatos = session.query(Contatos).all()
-    global mensagem
+    if 'id_user' not in flask_session:
+        return redirect('/login')
+    user = flask_session["id_user"]
+    contatos = session.query(Contatos).filter_by(id_user=user).all()
     return render_template("index.html", contatos=contatos)
 
 @app.route("/salvar_contato", methods=['POST'])
@@ -28,6 +30,7 @@ def add_contato():
             celular=request.form['celular'],
             celular_alt=request.form.get("celular_alt", ""),
             tags=request.form['tags'],
+            id_user=1
         )
         session.add(novo_contato)
         session.commit()
@@ -58,37 +61,57 @@ def atualizarContato():
 @app.route("/registrar", methods=['GET', 'POST'])
 def registrar_se():
     if request.method == 'POST':
-
         senha = request.form['password']
-
-        '''if user:
-            global mensagem
-            mensagem = 'Nome de usuario indisponivel!'
-            return redirect(url_for("#add_modal_alert", mensagem=mensagem))
+        confirmacao_senha = request.form['confirm_password']
+        user = session.query(Users).filter_by(username=request.form["user"]).first()
+        print("user: ", user)
+        print("aaaaaaaaaaaaaaaaa")
+        if user:
+            user_return = 'Nome de usuario indisponivel!'
+            return render_template("/registro.html", user_return=user_return)
         elif senha != confirmacao_senha:
-            mensagemSenha = 'As senhas não são iguais!'
-            return redirect(url_for("#add_modal_alert", mensagemSenha=mensagemSenha))
-        else:'''
-
-        hashed_password = generate_password_hash(senha)
-        print('hash code', hashed_password)
-        novo_usuario = Users(
-            nome=request.form['nome'],
-            username=request.form['user'],
-            senha=hashed_password
-        )
-        session.add(novo_usuario)
-        session.commit()
-        return redirect("/login")
+            password_return = 'As senhas não são iguais!'
+            return render_template("/registro.html", password_return=password_return)
+        else:
+            hashed_password = generate_password_hash(senha)
+            print("-"*20)
+            print('hash code', hashed_password)
+            print(request.form['user'])
+            novo_usuario = Users(
+                nome=request.form['nome'],
+                username=request.form['user'],
+                senha=hashed_password
+            )
+            session.add(novo_usuario)
+            session.commit()
+            return redirect("/login")
     return render_template('/registro.html')
 
-@app.route("/login")
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['user']
+        password = request.form['password']
+        user = session.query(Users).filter_by(username=username).first()
+
+        if user and check_password_hash(user.senha, password):
+            flask_session["id_user"] = user.id_user
+            print("ativando SESSION: ", flask_session)
+            return redirect("/")
+        else:
+            error = "Login falhou, confira suas credenciais ou "
+            register_link = "<a href='/registrar'>registre-se aqui</a>"
+            return render_template('Login.html', error=error + register_link)
     return render_template("Login.html")
+
+@app.route("/logout", methods=['GET'])
+def logout():
+    print("Antes: ", flask_session["id_user"])
+    flask_session.pop('id_user', None)
+    return redirect("/login")
 
 
 if __name__ == "__main__":
     app.run()
+
 
