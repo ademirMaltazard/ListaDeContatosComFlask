@@ -1,6 +1,7 @@
 {% extends "Base.html" %}
 {{super()}}
 {% block content %}
+    <h5 class="left">Bem vindo {{ user.nome }}!</h5>
     <table class="highlight">
         <thead>
           <tr>
@@ -59,12 +60,4 @@
             </form>
         </div>
     </div>
-    {% if alert %}
-        <div id="add_modal_alert" class="modal">
-            <div class="modal-content">
-                <h3 >Erro!!!</h3>
-                <span>{{ mensagem }}</span>
-            </div>
-        </div>
-    {% endif %}
 {% endblock %}

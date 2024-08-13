@@ -11,14 +11,16 @@ mensagem = ''
 def index():
     if 'id_user' not in flask_session:
         return redirect('/login')
-    user = flask_session["id_user"]
-    contatos = session.query(Contatos).filter_by(id_user=user).all()
-    return render_template("index.html", contatos=contatos)
+    id_user = flask_session["id_user"]
+    user = session.query(Users).filter_by(id_user=id_user).first()
+    contatos = session.query(Contatos).filter_by(id_user=id_user).all()
+    return render_template("index.html", contatos=contatos, user=user)
 
 @app.route("/salvar_contato", methods=['POST'])
 def add_contato():
     email = request.form['email']
-    contato = session.query(Contatos).filter_by(email=email).first()
+    user = flask_session["id_user"]
+    contato = session.query(Contatos).filter_by(id_user=user, email=email).first()
     print(contato)
 
     if "id_user" not in flask_session:
@@ -37,7 +39,7 @@ def add_contato():
         session.add(novo_contato)
         session.commit()
         return redirect("/")
-    return redirect('/')
+    return render_template("index.html")
 
 @app.route("/deletar_contato", methods=['POST'])
 def deletarContato():
